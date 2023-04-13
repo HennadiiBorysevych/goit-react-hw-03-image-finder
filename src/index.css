@@ -171,14 +171,17 @@ img {
   justify-content: center;
   align-items: center;
   background-color: rgba(0, 0, 0, 0.8);
-  z-index: 1200;
 }
 
 .Modal {
-  max-width: calc(100vw - 48px);
-  max-height: calc(100vh - 24px);
+  position: absolute;
+  top: 80px;
+  max-width: calc(100vw - 40%);
+  max-height: calc(100vh - 20%);
 }
-
+.is-open {
+  display: block;
+}
 /*
 * Стили компонента Buton (Load more)
 */
@@ -209,4 +212,10 @@ img {
 .Button:hover,
 .Button:focus {
   background-color: #303f9f;
+}
+svg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  transform: translate(800%, 324%);
 }

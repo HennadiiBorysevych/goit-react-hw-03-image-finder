@@ -1,17 +1,17 @@
 import '../index.css';
 import React from 'react';
-
-import Searchbar from './search-bar/SearchBar';
-import ImageGallery from './ImageGallery/ImageGallery';
-import Button from './LoadMoreBtn/Button';
-
-import { Audio } from 'react-loader-spinner';
+import { fetchImages } from './api';
+import { Searchbar, ImageGallery, Button, Modal } from './index';
+import { MagnifyingGlass } from 'react-loader-spinner';
 
 class App extends React.Component {
   state = {
     value: '',
     data: [],
     page: 1,
+    isLoading: false,
+    largeImageURL: '',
+    modalOpen: false,
   };
 
   handleSubmit = value => {
@@ -23,41 +23,52 @@ class App extends React.Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (prevState.value !== this.state.value) {
-      fetch(
-        `https://pixabay.com/api/?q=${this.state.value}&page=1&key=33559977-5d8a81e40738ffd9c726fd9c1&image_type=photo&orientation=horizontal&per_page=12`
-      )
-        .then(response =>
-          response.ok ? response.json() : Promise.reject(response)
-        )
-        .then(data => {
-          this.setState({ data: data.hits });
-        })
-        .catch(error => console.log(error));
+      this.setState({ isLoading: true });
+      setTimeout(() => {
+        fetchImages(this.state.value, 1)
+          .then(data => {
+            this.setState({ data, isLoading: false });
+          })
+          .catch(error => console.log(error));
+      }, 2000);
     } else if (prevState.page !== this.state.page) {
-      fetch(
-        `https://pixabay.com/api/?q=${this.state.value}&page=${this.state.page}&key=33559977-5d8a81e40738ffd9c726fd9c1&image_type=photo&orientation=horizontal&per_page=12`
-      )
-        .then(response =>
-          response.ok ? response.json() : Promise.reject(response)
-        )
+      this.setState({ isLoading: true });
+      fetchImages(this.state.value, this.state.page)
         .then(data => {
           this.setState(prevState => ({
-            data: [...prevState.data, ...data.hits],
+            data: [...prevState.data, ...data],
+            isLoading: false,
           }));
         })
         .catch(error => console.log(error));
     }
   }
-
+  handleModalClick = largeImageURL => {
+    this.setState({ largeImageURL, modalOpen: true });
+  };
+  onModalClose = () => {
+    this.setState({ modalOpen: false });
+  };
   render() {
     return (
       <>
         <Searchbar onSubmit={this.handleSubmit} />
-        <Audio />;
-        <ImageGallery data={this.state.data} />
+        {this.state.isLoading && (
+          <MagnifyingGlass visible={true} glassColor="#c0efff" />
+        )}
+        <ImageGallery
+          data={this.state.data}
+          modalClick={this.handleModalClick}
+        />
         {this.state.data.length > 0 ? (
           <Button handleLoadMore={this.handleLoadMore} />
         ) : null}
+        {this.state.modalOpen && (
+          <Modal
+            largeImageURL={this.state.largeImageURL}
+            onClose={this.onModalClose}
+          />
+        )}
       </>
     );
   }
