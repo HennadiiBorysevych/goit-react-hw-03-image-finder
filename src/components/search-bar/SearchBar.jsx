@@ -1,5 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
+import { FaSearch } from 'react-icons/fa';
 
 class Searchbar extends React.Component {
   handleInput = e => {
@@ -12,7 +13,7 @@ class Searchbar extends React.Component {
       <header className={clsx('Searchbar')}>
         <form onSubmit={this.handleInput} className={clsx('SearchForm')}>
           <button type="submit" className={clsx('SearchForm-button')}>
-            <span className={clsx('SearchForm-button-label')}>Search</span>
+            <FaSearch className={clsx('SearchForm-button-label')} />
           </button>
 
           <input
