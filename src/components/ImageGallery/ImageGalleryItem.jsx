@@ -1,5 +1,6 @@
 import clsx from 'clsx';
 import React from 'react';
+import PropTypes from 'prop-types';
 
 class ImageGalleryItem extends React.Component {
   render() {
@@ -20,3 +21,12 @@ class ImageGalleryItem extends React.Component {
 }
 
 export default ImageGalleryItem;
+
+ImageGalleryItem.propTypes={
+  item: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    webformatURL: PropTypes.string.isRequired,
+    largeImageURL: PropTypes.string.isRequired,
+  }).isRequired,
+  modalClick: PropTypes.func.isRequired,
+}

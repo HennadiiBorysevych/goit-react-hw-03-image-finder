@@ -1,4 +1,5 @@
 import clsx from 'clsx';
+import PropTypes from 'prop-types';
 
 const Button = ({ handleLoadMore }) => {
   return (
@@ -8,3 +9,7 @@ const Button = ({ handleLoadMore }) => {
   );
 };
 export default Button;
+
+Button.propTypes={
+  handleLoadMore: PropTypes.func.isRequired,
+}

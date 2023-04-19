@@ -1,5 +1,7 @@
 import React from 'react';
 import clsx from 'clsx';
+import PropTypes from 'prop-types';
+
 import { FaSearch } from 'react-icons/fa';
 
 class Searchbar extends React.Component {
@@ -29,3 +31,7 @@ class Searchbar extends React.Component {
   }
 }
 export default Searchbar;
+
+Searchbar.propTypes={
+  onSubmit: PropTypes.func.isRequired,
+}
